@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">AAA</string>
+    <string name="app_slogan">The World\'s Loudest Instant Messaging Service</string>
+
+    <string name="login_button">Log in</string>
+    <string name="register_button">Register</string>
+
+    <string name="register_activity_title">Register</string>
+    <string name="login_activity_title">Log in</string>
+
+    <string name="add_friends_button">Add Friends</string>
+
+    <string name="toast_bad_email_format">Please enter a valid email address.</string>
+    <string name="toast_bad_username">No account with the provided Username or Email exists.</string>
+    <string name="toast_bad_password">Incorrect password, please try again.</string>
+    <string name="toast_empty_fields">Please fill out all the fields before proceeding.</string>
+    <string name="toast_registration_success">Registration completed successfully!</string>
+    <string name="toast_duplicate_username">Username already exists. Please choose a different username.</string>
+    <string name="toast_lost_username">Cannot find username. Please close the app and try again.</string>
+
+    <string name="toast_failed_login">Log in failed. Please check your credentials and try again.</string>
+
+    <string name="toast_error_generic">Something went wrong. Please try again.</string>
+    <string name="toast_failed_server_connection">Failed to connect to server. Please try again.</string>
+
+    <string name="server_response_success">success</string>
+    <string name="server_response_username">username</string>
+    <string name="server_response_password">password</string>
+
+    <string name="search">Search</string>
+    <string name="log_out">Log out</string>
+</resources>

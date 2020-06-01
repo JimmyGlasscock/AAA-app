@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="register_page">https://jimmyglasscock.tech/projects/AAA/register.php</string>
+    <string name="login_page">https://jimmyglasscock.tech/projects/AAA/login.php</string>
+    <string name="get_friends_page">https://jimmyglasscock.tech/projects/AAA/getFriends.php</string>
+</resources>
