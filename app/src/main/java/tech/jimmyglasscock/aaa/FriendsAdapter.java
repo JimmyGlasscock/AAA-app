@@ -1,5 +1,6 @@
 package tech.jimmyglasscock.aaa;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -77,7 +78,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             intent.putExtra("id", id.getText().toString());
             intent.putExtra("name", name.getText().toString());
             intent.putExtra("accepted", accepted.getText().toString());
-            context.startActivity(intent);
+            intent.putExtra("adapterPosition", getAdapterPosition());
+            ((Activity)context).startActivityForResult(intent, 777);
         }
+
     }
 }

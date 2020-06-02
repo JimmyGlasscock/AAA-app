@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -171,7 +172,9 @@ public class PersonActivity extends AppCompatActivity {
         if(responseString.equals("removed-friend")){
             Toast.makeText(getApplicationContext(), R.string.friend_removed_successfully, Toast.LENGTH_LONG).show();
             //tells main menu to refresh when done
-            setResult(RESULT_OK);
+            Intent intent = new Intent();
+            intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
+            setResult(777, intent);
             finish();
         }
 

@@ -77,7 +77,10 @@ public class MainMenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode == 777) {
+            //reload friends list
+            loadFriendsList();
+        }
     }
 
     public void loadFriendsList(){
