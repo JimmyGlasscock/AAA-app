@@ -83,7 +83,16 @@ public class PersonActivity extends AppCompatActivity {
     }
 
     public void sendFriendRequest(View v){
+        Button request = (Button) findViewById(R.id.friendRequestButton);
+        String currentButtonText = request.getText().toString();
 
+        //if request has not been sent yet
+        if(!currentButtonText.equals(getString(R.string.friends_request_button_sent))) {
+            //make request here
+
+
+            request.setText(R.string.friends_request_button_sent);
+        }
     }
 
     public void sendShout(View v){
@@ -175,6 +184,15 @@ public class PersonActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
             setResult(777, intent);
+            finish();
+        }
+
+        if(responseString.equals("request-sent")){
+            Toast.makeText(getApplicationContext(), R.string.friends_request_sent, Toast.LENGTH_LONG).show();
+            //tells main menu to refresh when done
+            Intent intent = new Intent();
+            intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
+            setResult(888, intent);
             finish();
         }
 

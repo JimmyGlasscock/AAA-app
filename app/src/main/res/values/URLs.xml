@@ -4,4 +4,5 @@
     <string name="login_page">https://jimmyglasscock.tech/projects/AAA/login.php</string>
     <string name="get_friends_page">https://jimmyglasscock.tech/projects/AAA/getFriends.php</string>
     <string name="remove_friend_page">https://jimmyglasscock.tech/projects/AAA/removeFriend.php</string>
+    <string name="find_friends_page">https://jimmyglasscock.tech/projects/AAA/findFriends.php</string>
 </resources>

@@ -1,30 +1,27 @@
 package tech.jimmyglasscock.aaa;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,55 +34,29 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainMenuActivity extends AppCompatActivity {
+public class FindFriendsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
-
-        loadFriendsList();
-    }
-
-    @Override
-    public void onBackPressed() {
-        //do nothing, back disabled
+        setContentView(R.layout.activity_find_friends);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.search, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int menuItemSelected = item.getItemId();
-        if(menuItemSelected == R.id.action_log_out){
-            Context context = MainMenuActivity.this;
-            logout();
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void logout(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainMenuActivity.this);
-        prefs.edit().putString("username", "").apply();
-        prefs.edit().putString("password", "").apply();
-
-        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 777 || resultCode == 999) {
-            //reload friends list
-            loadFriendsList();
+        if (resultCode == 888) {
+            //friend request sent
         }
     }
 
-    public void loadFriendsList(){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainMenuActivity.this);
+    public void getAllFriends(View v){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(FindFriendsActivity.this);
         String username = prefs.getString("username", "");
 
         JSONObject myInfo = new JSONObject();
@@ -96,7 +67,7 @@ public class MainMenuActivity extends AppCompatActivity {
         }
 
         RequestBody body = RequestBody.create(myInfo.toString(), MediaType.parse("application/json; charset=utf-8"));
-        postRequest(getString(R.string.get_friends_page), body);
+        postRequest(getString(R.string.find_friends_page), body);
     }
 
     public void postRequest(String postURL, RequestBody postBody){
@@ -125,11 +96,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(responseString.equals(getString(R.string.server_response_username))){
-                                Toast.makeText(getApplicationContext(), getString(R.string.toast_lost_username), Toast.LENGTH_LONG).show();
-                            }else{
-                                addFriendsToScreen(responseString);
-                            }
+                            populateRecylcerView(responseString);
                         }
                     });
 
@@ -140,7 +107,7 @@ public class MainMenuActivity extends AppCompatActivity {
         });
     }
 
-    public void addFriendsToScreen(String responseString){
+    public void populateRecylcerView(String responseString){
         ArrayList<JSONObject> dataset = new ArrayList<JSONObject>();
 
         try {
@@ -155,11 +122,12 @@ public class MainMenuActivity extends AppCompatActivity {
         RecyclerView friendsView = findViewById(R.id.friends_view);
 
         if(dataset.isEmpty()){
-            //so sad :'(
-            Button addFriends = (Button) findViewById(R.id.no_friends_button);
-            addFriends.setVisibility(View.VISIBLE);
+            TextView noResults = (TextView) findViewById(R.id.no_results);
+            noResults.setVisibility(View.VISIBLE);
             friendsView.setVisibility(View.GONE);
+            return;
         }
+
         //uses a linear layout manager
         LinearLayoutManager manager = new LinearLayoutManager(this);
         DividerItemDecoration decoration = new DividerItemDecoration(friendsView.getContext(), manager.getOrientation());
@@ -168,10 +136,5 @@ public class MainMenuActivity extends AppCompatActivity {
 
         RecyclerView.Adapter adapter = new FriendsAdapter(this, dataset);
         friendsView.setAdapter(adapter);
-    }
-
-    public void findFriends(View v){
-        Intent intent = new Intent(this, FindFriendsActivity.class);
-        startActivityForResult(intent, 999);
     }
 }

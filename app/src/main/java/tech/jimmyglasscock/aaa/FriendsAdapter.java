@@ -40,13 +40,23 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         try {
             String fullname = mDataset.get(position).getString("firstname") + " " + mDataset.get(position).getString("lastname");
             String id = mDataset.get(position).getString("id");
-            String accepted = mDataset.get(position).getString("accepted");
+            String username;
+            String accepted;
 
             holder.name.setText(fullname);
             holder.id.setText(id);
-            if(accepted != null){
+
+            if(mDataset.get(position).getString("accepted") != null){
+                accepted = mDataset.get(position).getString("accepted");
                 holder.accepted.setText(accepted);
             }
+
+            if(mDataset.get(position).getString("username") != null){
+                username = mDataset.get(position).getString("username");
+                holder.username.setText(username);
+                holder.username.setVisibility(View.VISIBLE);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,6 +72,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         public TextView name;
         public TextView id;
         public TextView accepted;
+        public TextView username;
 
         public FriendsViewHolder(View v){
             super(v);
@@ -69,6 +80,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             name = v.findViewById(R.id.friend_name);
             id = v.findViewById(R.id.friend_id);
             accepted = v.findViewById(R.id.friend_accepted);
+            username = v.findViewById(R.id.username);
             v.setOnClickListener(this);
         }
 
@@ -78,6 +90,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             intent.putExtra("id", id.getText().toString());
             intent.putExtra("name", name.getText().toString());
             intent.putExtra("accepted", accepted.getText().toString());
+            intent.putExtra("username", username.getText().toString());
             intent.putExtra("adapterPosition", getAdapterPosition());
             ((Activity)context).startActivityForResult(intent, 777);
         }

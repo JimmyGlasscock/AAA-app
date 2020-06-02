@@ -18,6 +18,9 @@
 
     <string name="add_friends_button">Add Friends</string>
 
+    <string name="no_results">No Results</string>
+    <string name="no_internet_connection">Unable to fetch results.</string>
+
     <string name="toast_bad_email_format">Please enter a valid email address.</string>
     <string name="toast_bad_username">No account with the provided Username or Email exists.</string>
     <string name="toast_bad_password">Incorrect password, please try again.</string>
@@ -32,6 +35,9 @@
     <string name="toast_failed_server_connection">Failed to connect to server. Please try again.</string>
 
     <string name="friend_removed_successfully">Friend has been successfully removed.</string>
+    <string name="friends_request_sent">The friend request has been sent!</string>
+    <string name="friends_request_reject">Friend Request deleted.</string>
+    <string name="friends_request_accept">Friend has been added!</string>
 
     <string name="server_response_success">success</string>
     <string name="server_response_username">username</string>
