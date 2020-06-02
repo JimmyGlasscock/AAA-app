@@ -1,11 +1,14 @@
 package tech.jimmyglasscock.aaa;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -65,10 +68,16 @@ public class MainMenuActivity extends AppCompatActivity {
 
     public void logout(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainMenuActivity.this);
-        prefs.edit().putString("username", "").commit();
-        prefs.edit().putString("password", "").commit();
+        prefs.edit().putString("username", "").apply();
+        prefs.edit().putString("password", "").apply();
 
         finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 
     public void loadFriendsList(){
@@ -139,10 +148,12 @@ public class MainMenuActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         RecyclerView friendsView = findViewById(R.id.friends_view);
         //uses a linear layout manager
-        friendsView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager manager = new LinearLayoutManager(this);
+        DividerItemDecoration decoration = new DividerItemDecoration(friendsView.getContext(), manager.getOrientation());
+        friendsView.setLayoutManager(manager);
+        friendsView.addItemDecoration(decoration);
 
         RecyclerView.Adapter adapter = new FriendsAdapter(this, dataset);
         friendsView.setAdapter(adapter);

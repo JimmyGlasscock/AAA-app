@@ -5,5 +5,6 @@
     <color name="colorAccent">#9fe3ad</color>
 
     <color name="textColor">#ffffff</color>
+    <color name="dangerTextColor">#c40000</color>
     <color name="buttonColor">#e8e8e8</color>
 </resources>

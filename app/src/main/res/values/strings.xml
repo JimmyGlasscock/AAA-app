@@ -5,6 +5,14 @@
     <string name="login_button">Log in</string>
     <string name="register_button">Register</string>
 
+    <string name="friends_request_button_default">Send Friend Request</string>
+    <string name="friends_request_button_sent">Friend Request Pending</string>
+    <string name="remove_friend_button">Remove Friend</string>
+    <string name="remove_friend_yes_no">Really unfriend?</string>
+    <string name="shout_button">Shout at </string>
+    <string name="record_button">Send a Sound Clip</string>
+    <string name="messages_button">View Messages</string>
+
     <string name="register_activity_title">Register</string>
     <string name="login_activity_title">Log in</string>
 
@@ -22,6 +30,8 @@
 
     <string name="toast_error_generic">Something went wrong. Please try again.</string>
     <string name="toast_failed_server_connection">Failed to connect to server. Please try again.</string>
+
+    <string name="friend_removed_successfully">Friend has been successfully removed.</string>
 
     <string name="server_response_success">success</string>
     <string name="server_response_username">username</string>

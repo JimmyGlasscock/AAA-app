@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PersonActivity">
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:gravity="center"
+        android:textSize="36dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/friendRequestButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
+        android:background="@color/buttonColor"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="@string/friends_request_button_default"
+        android:onClick="sendFriendRequest"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        />
+
+    <Button
+        android:id="@+id/shoutButton"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="@color/buttonColor"
+        android:textColor="@color/colorPrimaryDark"
+        android:onClick="sendShout"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name" />
+
+    <Button
+        android:id="@+id/recordButton"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/buttonColor"
+        android:text="@string/record_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:onClick="record"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/shoutButton" />
+
+    <Button
+        android:id="@+id/messagesButton"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@color/buttonColor"
+        android:text="@string/messages_button"
+        android:textColor="@color/colorPrimaryDark"
+        android:onClick="viewMessages"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recordButton" />
+
+    <Button
+        android:id="@+id/removeFriendButton"
+        android:layout_width="156dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="160dp"
+        android:background="@color/buttonColor"
+        android:text="@string/remove_friend_button"
+        android:textColor="@color/dangerTextColor"
+        android:onClick="confirmDeleteFriend"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messagesButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

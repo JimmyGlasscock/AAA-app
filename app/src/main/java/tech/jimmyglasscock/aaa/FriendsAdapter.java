@@ -1,6 +1,7 @@
 package tech.jimmyglasscock.aaa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         try {
             String fullname = mDataset.get(position).getString("firstname") + " " + mDataset.get(position).getString("lastname");
             String id = mDataset.get(position).getString("id");
+            String accepted = mDataset.get(position).getString("accepted");
 
             holder.name.setText(fullname);
             holder.id.setText(id);
+            if(accepted != null){
+                holder.accepted.setText(accepted);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -51,14 +56,28 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         return mDataset.size();
     }
 
-    public static class FriendsViewHolder extends RecyclerView.ViewHolder{
+    public static class FriendsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private final Context context;
         public TextView name;
         public TextView id;
+        public TextView accepted;
 
         public FriendsViewHolder(View v){
             super(v);
+            context = v.getContext();
             name = v.findViewById(R.id.friend_name);
             id = v.findViewById(R.id.friend_id);
+            accepted = v.findViewById(R.id.friend_accepted);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, PersonActivity.class);
+            intent.putExtra("id", id.getText().toString());
+            intent.putExtra("name", name.getText().toString());
+            intent.putExtra("accepted", accepted.getText().toString());
+            context.startActivity(intent);
         }
     }
 }
