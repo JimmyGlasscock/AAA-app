@@ -42,6 +42,8 @@ public class PersonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person);
 
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         this.overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
 
         name = (TextView) findViewById(R.id.name);

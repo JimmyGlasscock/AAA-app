@@ -55,6 +55,8 @@ public class FindFriendsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
 
+        setTitle("Search Users");
+
         friendsView = (RecyclerView) findViewById(R.id.friends_view);
 
         getAllFriends(friendsView);
