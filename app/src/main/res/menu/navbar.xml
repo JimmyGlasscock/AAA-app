@@ -2,10 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_profile"
+        android:title="@string/search"
+        android:icon="@drawable/ic_person"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/action_inbox"
+        android:title="@string/search"
+        android:icon="@drawable/ic_inbox"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/action_main_menu"
+        android:title="@string/search"
+        android:icon="@drawable/ic_home"
+        android:orderInCategory="3"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/action_search"
         android:title="@string/search"
         android:icon="@drawable/ic_search"
-        android:orderInCategory="1"
+        android:orderInCategory="4"
         app:showAsAction="ifRoom"
         />
     <item

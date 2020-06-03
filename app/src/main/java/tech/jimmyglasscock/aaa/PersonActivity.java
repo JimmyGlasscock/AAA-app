@@ -62,6 +62,7 @@ public class PersonActivity extends AppCompatActivity {
             String firstname = fullname.substring(0, fullname.indexOf(' '));
             String shoutButtonString = getString(R.string.shout_button) + " " + firstname;
             shoutButton.setText(shoutButtonString);
+        //if accepted equals 0, request has been sent, but is pending
         }else{
             friendRequestButton.setVisibility(View.VISIBLE);
             shoutButton.setVisibility(View.GONE);
@@ -69,8 +70,7 @@ public class PersonActivity extends AppCompatActivity {
             messagesButton.setVisibility(View.GONE);
             removeFriendButton.setVisibility(View.GONE);
 
-            //if accepted equals 0, request has been sent, but is pending
-            if(accepted_status.equals("0")){
+            if(accepted_status.equals("0")) {
                 friendRequestButton.setText(R.string.friends_request_button_sent);
             }
         }

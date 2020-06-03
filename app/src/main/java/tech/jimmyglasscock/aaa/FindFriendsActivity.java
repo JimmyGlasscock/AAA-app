@@ -78,6 +78,7 @@ public class FindFriendsActivity extends AppCompatActivity {
                 return false;
             }
         });
+        searchView.setQueryHint(getString(R.string.search_hint));
         return true;
     }
 
@@ -146,16 +147,20 @@ public class FindFriendsActivity extends AppCompatActivity {
         ArrayList<JSONObject> dataset = new ArrayList<JSONObject>();
         ArrayList<Integer> seenIDs = new ArrayList<Integer>();
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(FindFriendsActivity.this);
+        String username = prefs.getString("username", "");
+
         try {
             JSONArray response = new JSONArray(responseString);
             for(int i = 0; i < response.length(); i++){
                 //remove duplicates if id has already been seen
                 int newID = response.getJSONObject(i).getInt("id");
-                if(!seenIDs.contains(newID)) {
-                    dataset.add(response.getJSONObject(i));
-                    seenIDs.add(newID);
+                if(!response.getJSONObject(i).getString("username").equals(username)){
+                    if(!seenIDs.contains(newID)) {
+                        dataset.add(response.getJSONObject(i));
+                        seenIDs.add(newID);
+                    }
                 }
-
             }
         } catch (JSONException e) {
             e.printStackTrace();

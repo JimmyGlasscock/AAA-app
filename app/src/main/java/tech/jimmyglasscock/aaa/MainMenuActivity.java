@@ -64,6 +64,12 @@ public class MainMenuActivity extends AppCompatActivity {
             Context context = MainMenuActivity.this;
             logout();
         }
+
+        if(menuItemSelected == R.id.action_search){
+            Context context = MainMenuActivity.this;
+            Intent intent = new Intent(this, FindFriendsActivity.class);
+            startActivity(intent);
+        }
         return super.onOptionsItemSelected(item);
     }
 
