@@ -89,7 +89,19 @@ public class PersonActivity extends AppCompatActivity {
         //if request has not been sent yet
         if(!currentButtonText.equals(getString(R.string.friends_request_button_sent))) {
             //make request here
+            String friendID = getIntent().getStringExtra("id");
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PersonActivity.this);
+            String username = prefs.getString("username", "");
+            JSONObject friendInfo = new JSONObject();
+            try{
+                friendInfo.put("id", friendID);
+                friendInfo.put("myUsername", username);
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
 
+            RequestBody body = RequestBody.create(friendInfo.toString(), MediaType.parse("application/json; charset=utf-8"));
+            postRequest(getString(R.string.friend_request_page), body);
 
             request.setText(R.string.friends_request_button_sent);
         }

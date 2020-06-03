@@ -6,14 +6,21 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,14 +43,41 @@ import okhttp3.Response;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
+    private EditText searchBar;
+    private RecyclerView friendsView;
+
+    LinearLayoutManager manager;
+    DividerItemDecoration decoration;
+    FriendsAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
+
+        friendsView = (RecyclerView) findViewById(R.id.friends_view);
+
+        getAllFriends(friendsView);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.search, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -51,7 +85,8 @@ public class FindFriendsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == 888) {
-            //friend request sent
+            //friend request sent, reload list
+            getAllFriends(findViewById(R.id.friends_view));
         }
     }
 
@@ -109,11 +144,18 @@ public class FindFriendsActivity extends AppCompatActivity {
 
     public void populateRecylcerView(String responseString){
         ArrayList<JSONObject> dataset = new ArrayList<JSONObject>();
+        ArrayList<Integer> seenIDs = new ArrayList<Integer>();
 
         try {
             JSONArray response = new JSONArray(responseString);
             for(int i = 0; i < response.length(); i++){
-                dataset.add(response.getJSONObject(i));
+                //remove duplicates if id has already been seen
+                int newID = response.getJSONObject(i).getInt("id");
+                if(!seenIDs.contains(newID)) {
+                    dataset.add(response.getJSONObject(i));
+                    seenIDs.add(newID);
+                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -129,12 +171,13 @@ public class FindFriendsActivity extends AppCompatActivity {
         }
 
         //uses a linear layout manager
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        DividerItemDecoration decoration = new DividerItemDecoration(friendsView.getContext(), manager.getOrientation());
+        manager = new LinearLayoutManager(this);
+        decoration = new DividerItemDecoration(friendsView.getContext(), manager.getOrientation());
         friendsView.setLayoutManager(manager);
         friendsView.addItemDecoration(decoration);
 
-        RecyclerView.Adapter adapter = new FriendsAdapter(this, dataset);
+        adapter = new FriendsAdapter(this, dataset);
         friendsView.setAdapter(adapter);
     }
+
 }

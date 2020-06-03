@@ -43,6 +43,8 @@
     <string name="server_response_username">username</string>
     <string name="server_response_password">password</string>
 
+    <string name="search_hint">Search</string>
+
     <string name="search">Search</string>
     <string name="log_out">Log out</string>
 </resources>

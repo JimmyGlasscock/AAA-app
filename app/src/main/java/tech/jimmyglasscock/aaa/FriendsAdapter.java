@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,13 +20,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> {
+public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsViewHolder> implements Filterable {
 
     private ArrayList<JSONObject> mDataset;
+    private ArrayList<JSONObject> mDatasetCopy;
     private LayoutInflater mInflater;
 
     public FriendsAdapter(Context c, ArrayList<JSONObject> dataset){
         mDataset = dataset;
+        mDatasetCopy = new ArrayList<JSONObject>(dataset);
         mInflater = LayoutInflater.from(c);
     }
 
@@ -46,15 +50,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
             holder.name.setText(fullname);
             holder.id.setText(id);
 
-            if(mDataset.get(position).getString("accepted") != null){
-                accepted = mDataset.get(position).getString("accepted");
-                holder.accepted.setText(accepted);
-            }
-
             if(mDataset.get(position).getString("username") != null){
                 username = mDataset.get(position).getString("username");
                 holder.username.setText(username);
                 holder.username.setVisibility(View.VISIBLE);
+            }
+
+            if(mDataset.get(position).getString("accepted") != null){
+                accepted = mDataset.get(position).getString("accepted");
+                holder.accepted.setText(accepted);
             }
 
         } catch (JSONException e) {
@@ -66,6 +70,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     public int getItemCount(){
         return mDataset.size();
     }
+
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final Context context;
@@ -96,4 +101,52 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         }
 
     }
+
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    private Filter filter = new Filter() {
+        @Override
+        //this is automatically run in background thread
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<JSONObject> filteredList = new ArrayList<JSONObject>();
+
+            if(constraint == null || constraint.length() == 0){
+                filteredList.addAll(mDatasetCopy);
+            }else{
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for(JSONObject o : mDatasetCopy){
+                    try{
+                        String fullname = o.getString("firstname").toLowerCase() + " " + o.getString("lastname").toLowerCase();
+                        String username = o.getString("username").toLowerCase();
+
+                        if(fullname.contains(filterPattern) || username.contains(filterPattern)){
+                            filteredList.add(o);
+                        }
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        //this automatically runs on UI thread
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mDataset.clear();
+            mDataset.addAll((ArrayList<JSONObject>)results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 }
