@@ -43,7 +43,6 @@ import okhttp3.Response;
 
 public class FindFriendsActivity extends AppCompatActivity {
 
-    private EditText searchBar;
     private RecyclerView friendsView;
 
     LinearLayoutManager manager;

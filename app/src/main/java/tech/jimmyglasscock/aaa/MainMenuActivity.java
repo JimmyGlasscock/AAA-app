@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -56,8 +57,17 @@ public class MainMenuActivity extends AppCompatActivity {
         //do nothing, back disabled
     }
 
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh
+        loadFriendsList();
+    }
+
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.navbar, menu);
+
         return true;
     }
 
@@ -74,6 +84,13 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(this, FindFriendsActivity.class);
             startActivity(intent);
         }
+
+        if(menuItemSelected == R.id.action_inbox){
+            Context context = MainMenuActivity.this;
+            Intent intent = new Intent(this, friendRequestInbox.class);
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -109,7 +126,7 @@ public class MainMenuActivity extends AppCompatActivity {
         postRequest(getString(R.string.get_friends_page), body);
     }
 
-    public void postRequest(String postURL, RequestBody postBody){
+    public void postRequest(final String postURL, RequestBody postBody){
         OkHttpClient client = new OkHttpClient();
 
         final Request request = new Request.Builder().url(postURL).post(postBody).header("Accept", "application/json").header("Content-Type", "application/json").build();
@@ -135,6 +152,7 @@ public class MainMenuActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            //load friends page
                             if(responseString.equals(getString(R.string.server_response_username))){
                                 Toast.makeText(getApplicationContext(), getString(R.string.toast_lost_username), Toast.LENGTH_LONG).show();
                             }else{

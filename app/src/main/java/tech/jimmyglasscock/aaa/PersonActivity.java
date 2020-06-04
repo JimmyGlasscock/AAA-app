@@ -31,11 +31,14 @@ import okhttp3.Response;
 public class PersonActivity extends AppCompatActivity {
 
     TextView name;
+    TextView subtitle;
     Button friendRequestButton;
     Button shoutButton;
     Button recordButton;
     Button messagesButton;
     Button removeFriendButton;
+    Button acceptButton;
+    Button denyButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +50,14 @@ public class PersonActivity extends AppCompatActivity {
         this.overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
 
         name = (TextView) findViewById(R.id.name);
+        subtitle = (TextView) findViewById(R.id.received_request_text);
         friendRequestButton = (Button) findViewById(R.id.friendRequestButton);
         shoutButton = (Button) findViewById(R.id.shoutButton);
         recordButton = (Button) findViewById(R.id.recordButton);
         messagesButton = (Button) findViewById(R.id.messagesButton);
         removeFriendButton = (Button) findViewById(R.id.removeFriendButton);
+        acceptButton = (Button) findViewById(R.id.accept_button);
+        denyButton = (Button) findViewById(R.id.deny_button);
 
         String accepted_status = getIntent().getStringExtra("accepted");
 
@@ -64,15 +70,22 @@ public class PersonActivity extends AppCompatActivity {
             String firstname = fullname.substring(0, fullname.indexOf(' '));
             String shoutButtonString = getString(R.string.shout_button) + " " + firstname;
             shoutButton.setText(shoutButtonString);
-        //if accepted equals 0, request has been sent, but is pending
-        }else{
-            friendRequestButton.setVisibility(View.VISIBLE);
+        }else if(accepted_status.equals("2")){
             shoutButton.setVisibility(View.GONE);
             recordButton.setVisibility(View.GONE);
             messagesButton.setVisibility(View.GONE);
             removeFriendButton.setVisibility(View.GONE);
+            subtitle.setVisibility(View.VISIBLE);
+            acceptButton.setVisibility(View.VISIBLE);
+            denyButton.setVisibility(View.VISIBLE);
+        }else{
+            shoutButton.setVisibility(View.GONE);
+            recordButton.setVisibility(View.GONE);
+            messagesButton.setVisibility(View.GONE);
+            removeFriendButton.setVisibility(View.GONE);
+            friendRequestButton.setVisibility(View.VISIBLE);
 
-            if(accepted_status.equals("0")) {
+            if(accepted_status.equals("0")){
                 friendRequestButton.setText(R.string.friends_request_button_sent);
             }
         }
@@ -118,6 +131,42 @@ public class PersonActivity extends AppCompatActivity {
     }
 
     public void viewMessages(View v){
+
+    }
+
+    public void acceptFriendRequest(View v){
+        //make request here
+        String friendID = getIntent().getStringExtra("id");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PersonActivity.this);
+        String username = prefs.getString("username", "");
+        JSONObject friendInfo = new JSONObject();
+        try{
+            friendInfo.put("id", friendID);
+            friendInfo.put("myUsername", username);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(friendInfo.toString(), MediaType.parse("application/json; charset=utf-8"));
+        postRequest(getString(R.string.accept_request_page), body);
+
+    }
+
+    public void denyFriendRequest(View v){
+        //make request here
+        String friendID = getIntent().getStringExtra("id");
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(PersonActivity.this);
+        String username = prefs.getString("username", "");
+        JSONObject friendInfo = new JSONObject();
+        try{
+            friendInfo.put("id", friendID);
+            friendInfo.put("myUsername", username);
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(friendInfo.toString(), MediaType.parse("application/json; charset=utf-8"));
+        postRequest(getString(R.string.deny_request_page), body);
 
     }
 
@@ -207,6 +256,24 @@ public class PersonActivity extends AppCompatActivity {
             Intent intent = new Intent();
             intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
             setResult(888, intent);
+            finish();
+        }
+
+        if(responseString.equals("friend-accepted")){
+            Toast.makeText(getApplicationContext(), R.string.friends_request_accept, Toast.LENGTH_LONG).show();
+            //tells inbox to refresh when done
+            Intent intent = new Intent();
+            intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
+            setResult(1000, intent);
+            finish();
+        }
+
+        if(responseString.equals("friend-denied")){
+            Toast.makeText(getApplicationContext(), R.string.friends_request_reject, Toast.LENGTH_LONG).show();
+            //tells inbox to refresh when done
+            Intent intent = new Intent();
+            intent.putExtra("adapterPosition", getIntent().getStringExtra("adapterPosition"));
+            setResult(1001, intent);
             finish();
         }
 

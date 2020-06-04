@@ -8,6 +8,7 @@
         android:orderInCategory="1"
         app:showAsAction="always"
         />
+
     <item
         android:id="@+id/action_inbox"
         android:title="@string/inbox"
@@ -15,13 +16,15 @@
         android:orderInCategory="2"
         app:showAsAction="always"
         />
-    <item
+
+    <!--<item
         android:id="@+id/action_main_menu"
         android:title="@string/home"
         android:icon="@drawable/ic_home"
         android:orderInCategory="3"
         app:showAsAction="always"
         />
+        -->
     <item
         android:id="@+id/action_search"
         android:title="@string/search"
